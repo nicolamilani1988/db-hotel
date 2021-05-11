@@ -1,0 +1,27 @@
+● Selezionare tutti gli ospiti
+> SELECT * FROM ospiti
+
+● Selezionare tutti gli ospiti con document type = a CI
+> SELECT * FROM ospiti 
+WHERE document_type LIKE 'CI'
+
+● Selezionare i paganti che abbiano un ospite id associato
+> SELECT * FROM paganti 
+WHERE ospite_id IS NOT NULL
+
+● Selezionare tutte le stanze del primo piano
+> SELECT room_number FROM stanze 
+WHERE floor LIKE 1
+
+● Selezionare tutti gli ospiti che iniziano per E
+> SELECT name,lastname FROM ospiti 
+WHERE name LIKE 'E%'
+
+● Selezionare tutti gli ospiti che abbiano meno di 30 anni
+SELECT name,lastname,date_of_birth, YEAR(NOW()) - YEAR(date_of_birth) AS age FROM ospiti
+WHERE YEAR(NOW()) - YEAR(date_of_birth) < 30
+
+● Seleziona tutte le prenotazioni precedenti a maggio 2018
+> SELECT * FROM prenotazioni 
+WHERE created_at < '2018-05'
+

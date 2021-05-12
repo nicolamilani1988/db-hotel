@@ -1,0 +1,37 @@
+● Conta gli ospiti raggruppandoli per data di nascita
+> SELECT YEAR(date_of_birth), COUNT(*)
+ FROM ospiti
+ GROUP BY YEAR(date_of_birth)
+
+
+● Somma i prezzi dei pagamenti raggruppandoli per status
+> SELECT status , SUM(price)
+ FROM pagamenti
+ GROUP BY status
+
+
+● Conta quante volte è stata prenotata ogni stanza
+> SELECT stanza_id, COUNT(stanza_id)
+ FROM prenotazioni
+ GROUP BY stanza_id
+
+---> visualizzo anche room_number, includendo la tab stanze <---
+> SELECT stanze.room_number, COUNT(prenotazioni.stanza_id)
+ FROM stanze
+ JOIN prenotazioni
+ ON stanze.id = prenotazioni.stanza_id
+ GROUP BY stanze.room_number
+
+
+● Fai una analisi per vedere se ci sono ore in cui le prenotazioni sono più frequenti
+> SELECT HOUR(created_at), COUNT(created_at)
+ FROM prenotazioni
+ GROUP BY HOUR(created_at)
+ ORDER BY COUNT(created_at) DESC
+
+
+● Quante prenotazioni ha fatto l'ospite che ha fatto più prenotazioni? (quante, non chi!)
+> SELECT ospite_id, COUNT(prenotazione_id)
+ FROM prenotazioni_has_ospiti
+ GROUP BY ospite_id
+ ORDER BY COUNT(prenotazione_id) DESC

@@ -35,3 +35,55 @@
  FROM prenotazioni_has_ospiti
  GROUP BY ospite_id
  ORDER BY COUNT(prenotazione_id) DESC
+
+
+
+
+SECONDA PARTE
+● Come si chiamano gli ospiti che hanno fatto più di due prenotazioni
+> SELECT prenotazioni_has_ospiti.ospite_id, ospiti.name, ospiti.lastname, COUNT(prenotazioni_has_ospiti.prenotazione_id) AS tot_prenotazioni
+ FROM prenotazioni_has_ospiti
+ JOIN ospiti
+ ON prenotazioni_has_ospiti.ospite_id = ospiti.id
+ GROUP BY prenotazioni_has_ospiti.ospite_id
+ HAVING COUNT(prenotazioni_has_ospiti.prenotazione_id) > 2
+
+
+● Stampare tutti gli ospiti per ogni prenotazione
+> SELECT prenotazioni_has_ospiti.prenotazione_id,ospiti.name, ospiti.lastname
+ FROM prenotazioni_has_ospiti
+ JOIN ospiti
+ ON prenotazioni_has_ospiti.ospite_id = ospiti.id
+
+
+● Stampare Nome, Cognome, Prezzo e Pagante per tutte le prenotazioni fatte a Maggio 2018
+> SELECT prenotazioni.id, prenotazioni.created_at AS data_prenotazione,paganti.id AS id_pagante, paganti.name AS nome_pagante, paganti.lastname AS cognome_pagante, pagamenti.price, ospiti.name AS nome_ospite, ospiti.lastname AS cognome_ospite
+ FROM prenotazioni
+ JOIN pagamenti
+ ON prenotazioni.id = pagamenti.prenotazione_id
+ JOIN paganti
+ ON pagamenti.pagante_id = paganti.id
+ JOIN ospiti
+ ON paganti.ospite_id = ospiti.id
+ HAVING DATE(prenotazioni.created_at) < '2018-05-31' AND DATE(prenotazioni.created_at) > '2018-05-01'
+
+> SELECT prenotazioni.id, prenotazioni.created_at AS data_prenotazione, ospiti.name AS nome_ospite, ospiti.lastname AS cognome_ospite,pagamenti.price,paganti.name AS nome_pagante, paganti.lastname AS cognome_pagante
+ FROM ospiti
+ JOIN prenotazioni_has_ospiti
+ ON ospiti.id = prenotazioni_has_ospiti.ospite_id
+ JOIN prenotazioni
+ ON prenotazioni_has_ospiti.prenotazione_id = prenotazioni.id
+ JOIN pagamenti
+ ON prenotazioni.id = pagamenti.prenotazione_id
+ JOIN paganti
+ ON pagamenti.pagante_id = paganti.id
+ HAVING DATE(prenotazioni.created_at)>'2018-05-01' AND DATE(prenotazioni.created_at)<'2018-05-31'
+
+
+
+
+
+
+
+
+
